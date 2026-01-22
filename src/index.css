@@ -1,0 +1,706 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+@import './animations.css';
+
+/* ============================================
+   MODAL OVERLAY & BASE STYLES
+   ============================================ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    padding: 20px;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal {
+    background: var(--bg-panel);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    position: relative;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
+
+
+:root {
+    /* --- Nano Banana Pro Theme (Deep Slate & Neon) --- */
+    --bg-app: #0f172a;
+    /* Slate 950 - Deepest Blue */
+    --bg-panel: #1e293b;
+    /* Slate 800 */
+    --bg-card: #334155;
+    /* Slate 700 */
+    --bg-input: #0f172a;
+
+    /* Primary Neon Blue */
+    --primary-color: #3b82f6;
+    --primary-hover: #2563eb;
+    --primary-glow: rgba(59, 130, 246, 0.4);
+
+    /* Accents */
+    --accent-gold: #f59e0b;
+    /* Low Stock */
+    --accent-green: #10b981;
+    /* Success / Price */
+    --accent-red: #ef4444;
+    /* Delete / Error */
+    --neon-green-glow: rgba(16, 185, 129, 0.4);
+
+    /* Typography (High Contrast) */
+    --text-primary: #ffffff;
+    --text-secondary: #cbd5e1;
+    /* Slate 300 */
+    --text-muted: #64748b;
+    /* Slate 500 */
+
+    --border-color: #334155;
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.08);
+
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+    --shadow-glow: 0 0 15px var(--primary-glow);
+
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
+
+    --font-main: 'Cairo', system-ui, sans-serif;
+    --safe-area-bottom: env(safe-area-inset-bottom, 20px);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    direction: rtl;
+    overflow: hidden;
+    touch-action: manipulation;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* --- Header (Glassmorphism) --- */
+.app-header {
+    height: 64px;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    backdrop-filter: blur(12px);
+    position: relative;
+    z-index: 50;
+}
+
+.brand {
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px var(--primary-glow);
+    letter-spacing: -0.5px;
+}
+
+/* --- Products Area --- */
+.main-workspace {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+.products-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--bg-app);
+}
+
+/* Search Bar (Floating) */
+.search-container {
+    padding: 16px;
+    background: linear-gradient(180deg, var(--bg-app) 0%, rgba(15, 23, 42, 0) 100%);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.search-input-wrapper {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-full);
+    /* Pill shape */
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    height: 50px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.search-input-wrapper:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 12px var(--primary-glow);
+    transform: translateY(-1px);
+}
+
+.search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    padding: 0 12px;
+    outline: none;
+    font-family: inherit;
+}
+
+/* Grid */
+.products-grid {
+    flex: 1;
+    padding: 0 16px 100px 16px;
+    /* Bottom padding for overlay cart */
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px;
+    align-content: start;
+}
+
+@media (min-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 16px;
+    }
+}
+
+/* --- Cart Drawer (Modern) --- */
+.cart-panel {
+    width: 400px;
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    z-index: 40;
+}
+
+@media (max-width: 768px) {
+    .cart-panel {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: auto;
+        max-height: 85vh;
+        border-right: none;
+        border-top: 1px solid var(--border-color);
+        box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.6);
+        border-radius: 24px 24px 0 0;
+        background: var(--bg-panel);
+    }
+}
+
+.cart-header {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cart-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cart-title .badge {
+    background: var(--primary-color);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    box-shadow: 0 0 8px var(--primary-glow);
+}
+
+.cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.cart-footer {
+    padding: 16px;
+    padding-bottom: calc(16px + var(--safe-area-bottom));
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-panel);
+}
+
+/* --- Utilities & Buttons --- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 48px;
+    padding: 0 24px;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn:active {
+    transform: scale(0.96);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    border-color: var(--text-muted);
+}
+
+/* Standard Scrollbar Hide */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bg-card);
+    border-radius: 2px;
+}
+
+/* --- Modal & Overlays --- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 20px;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    transform: scale(0.95);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.show .modal {
+    transform: scale(1);
+}
+
+.modal-header {
+    background: var(--bg-card);
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.modal-product-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: white;
+}
+
+.modal-product-price {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--accent-green);
+    text-shadow: 0 0 10px var(--neon-green-glow);
+}
+
+.modal-qty-section {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.modal-qty-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.modal-qty-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.modal-qty-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.1s;
+}
+
+.modal-qty-btn:active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: scale(0.95);
+}
+
+.modal-qty-input {
+    width: 80px;
+    height: 50px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: white;
+}
+
+.modal-total {
+    padding: 16px 24px;
+    background: rgba(255, 255, 255, 0.03);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-total-value {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: white;
+}
+
+.modal-actions {
+    padding: 20px;
+    display: flex;
+    gap: 12px;
+}
+
+.modal-actions .btn {
+    flex: 1;
+}
+
+/* --- Utilities --- */
+.hidden {
+    display: none !important;
+}
+
+/* --- Mobile Specific Overrides --- */
+@media (max-width: 768px) {
+    .app-container {
+        padding-bottom: 60px;
+        /* Space for Mobile Tabs */
+    }
+
+    .products-panel,
+    .cart-panel {
+        width: 100%;
+        flex: 1;
+        border: none;
+        border-radius: 0;
+        position: relative;
+        /* Reset absolute positioning */
+        box-shadow: none;
+    }
+
+    .cart-panel {
+        /* Let CartPanel.tsx handle all cart-specific mobile styles */
+        border-top: none;
+    }
+
+    .mobile-tabs {
+        display: block;
+    }
+}
+
+.mobile-tabs {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-panel);
+    border-top: 1px solid var(--border-color);
+    padding-bottom: var(--safe-area-bottom);
+    z-index: 100;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+    .mobile-tabs {
+        display: block;
+    }
+}
+
+.mobile-tabs-inner {
+    display: flex;
+    height: 60px;
+}
+
+.mobile-tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-family: var(--font-main);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.mobile-tab.active {
+    color: var(--primary-color);
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.mobile-tab.active span {
+    text-shadow: 0 0 10px var(--primary-glow);
+}
+
+.tab-badge {
+    position: absolute;
+    top: 8px;
+    right: 25%;
+    background: var(--accent-red);
+    color: white;
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    border: 1px solid var(--bg-panel);
+}
+
+/* --- Toast Notification --- */
+.toast {
+    position: fixed;
+    bottom: 80px;
+    /* Above mobile tabs */
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(16, 185, 129, 0.9);
+    color: white;
+    padding: 12px 24px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    font-weight: 600;
+    min-width: min-content;
+    white-space: nowrap;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+@media (min-width: 769px) {
+    .toast {
+        bottom: 30px;
+        left: 20px;
+        transform: translateY(20px);
+    }
+
+    .toast.show {
+        transform: translateY(0);
+    }
+}
+
+/* --- Sales Log Modal --- */
+.sales-modal {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 80vh;
+}
+
+.sales-modal-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+}
+
+.sales-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.sales-stat {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.sales-stat.green {
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.sales-stat.cyan {
+    border-color: rgba(6, 182, 212, 0.3);
+}
+
+.sales-stat-value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.sales-stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.sales-list {
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.sales-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.2s;
+}
+
+.sales-item:last-child {
+    border-bottom: none;
+}
+
+.sales-item:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.sales-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sales-item-id {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--primary-color);
+    background: rgba(59, 130, 246, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    width: fit-content;
+}
+
+.sales-item-date {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.sales-item-total {
+    font-weight: 700;
+    color: var(--accent-green);
+    font-size: 1rem;
+}
+
+.sales-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}

@@ -1,0 +1,136 @@
+/* ==========================================
+   MICRO-ANIMATIONS & UX ENHANCEMENTS
+   ========================================== */
+
+/* Cart Panel Success Animation */
+@keyframes cartPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        border-color: var(--border-color);
+    }
+
+    50% {
+        transform: scale(1.02);
+        border-color: var(--accent-green);
+        box-shadow: 0 0 20px var(--neon-green-glow);
+    }
+}
+
+.cart-panel.item-added {
+    animation: cartPulse 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Button Press Animation */
+.btn:active {
+    transform: scale(0.96);
+}
+
+.btn-primary:active {
+    box-shadow: 0 2px 10px var(--primary-glow);
+}
+
+/* Smooth Fade In for Modals */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal {
+    animation: fadeIn 0.2s ease-out;
+}
+
+/* Slide Up Animation for Mobile Drawers */
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.cart-panel {
+    animation: slideUp 0.3s ease-out;
+}
+
+/* Shimmer Effect for Loading States */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.loading-shimmer {
+    background: linear-gradient(90deg,
+            var(--bg-card) 0%,
+            var(--bg-panel) 50%,
+            var(--bg-card) 100%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* Pulse for New Notifications */
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+.badge-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Smooth Hover Transitions */
+.product-card,
+.cart-item-row,
+.suggestion-item,
+.btn {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus Visible for Accessibility */
+*:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Smooth Scroll Behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Reduce Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
