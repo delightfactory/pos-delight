@@ -552,12 +552,11 @@ export const CartPanel: React.FC<CartPanelProps> = ({ cart, onCheckout, classNam
                    ============================================ */
                 @media (max-width: 768px) {
                     .cart-panel {
-                        position: fixed;
-                        top: 64px;
+                        position: absolute;
+                        top: 0;
                         left: 0;
                         right: 0;
-                        /* Align exactly above the navbar using the dynamic offset */
-                        bottom: var(--total-bottom-offset, 56px);
+                        bottom: 0;
                         z-index: 50;
                         transform: translateX(100%);
                         transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -604,7 +603,7 @@ export const CartPanel: React.FC<CartPanelProps> = ({ cart, onCheckout, classNam
                     .cart-footer {
                         flex: 0 0 auto;
                         padding: 14px;
-                        /* Regular padding since container respects navbar + safe-area height */
+                        /* Standard bottom padding since container respects natural flow */
                         padding-bottom: 24px;
                         border-top: 1px solid var(--border-color);
                         background: var(--bg-panel);

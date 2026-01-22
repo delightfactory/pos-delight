@@ -39,11 +39,10 @@ export const MobileTabs: React.FC<MobileTabsProps> = ({ activeTab, onTabChange, 
                 @media (max-width: 768px) {
                     .mobile-nav-bar {
                         display: flex;
-                        position: fixed;
-                        bottom: 0;
-                        left: 0;
-                        right: 0;
-                        /* Use the calculated total offset for height */
+                        position: relative;
+                        width: 100%;
+                        /* Occupy natural space in the flex container */
+                        flex-shrink: 0;
                         height: var(--total-bottom-offset, 56px);
                         background: var(--bg-panel);
                         border-top: 1px solid var(--border-color);

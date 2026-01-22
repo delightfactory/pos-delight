@@ -187,12 +187,6 @@ function App() {
         onOpenManagement={() => setIsManagementOpen(true)}
       />
 
-      <MobileTabs
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        cartCount={cart.totalItems}
-      />
-
       <main className="main-workspace">
         <ProductPanel
           products={products}
@@ -209,6 +203,12 @@ function App() {
           className={activeTab === 'products' ? 'hidden' : 'active'}
         />
       </main>
+
+      <MobileTabs
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        cartCount={cart.totalItems}
+      />
 
       <QuickAddModal
         product={selectedProduct}
