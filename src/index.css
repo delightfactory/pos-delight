@@ -95,7 +95,9 @@
     --radius-full: 9999px;
 
     --font-main: 'Cairo', system-ui, sans-serif;
-    --safe-area-bottom: env(safe-area-inset-bottom, 20px);
+    --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+    --navbar-height: 56px;
+    --total-bottom-offset: calc(var(--navbar-height) + var(--safe-area-bottom));
 }
 
 * {

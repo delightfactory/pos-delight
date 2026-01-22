@@ -43,12 +43,14 @@ export const MobileTabs: React.FC<MobileTabsProps> = ({ activeTab, onTabChange, 
                         bottom: 0;
                         left: 0;
                         right: 0;
-                        height: 56px;
+                        /* Use the calculated total offset for height */
+                        height: var(--total-bottom-offset, 56px);
                         background: var(--bg-panel);
                         border-top: 1px solid var(--border-color);
                         z-index: 100;
                         padding: 0;
-                        padding-bottom: env(safe-area-inset-bottom, 0);
+                        /* Padding at the bottom for safe area */
+                        padding-bottom: var(--safe-area-bottom, 0);
                     }
 
                     .nav-item {
