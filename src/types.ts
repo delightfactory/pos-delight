@@ -7,7 +7,7 @@ export type Json =
     | { [key: string]: Json | undefined }
     | Json[]
 
-export interface Database {
+export type Database = {
     public: {
         Tables: {
             products: {
@@ -50,6 +50,7 @@ export interface Database {
                     is_featured?: boolean
                     created_at?: string
                 }
+                Relationships: []
             }
             invoices: {
                 Row: {
@@ -79,6 +80,7 @@ export interface Database {
                     discount_type?: 'fixed' | 'percent' | null
                     created_at?: string
                 }
+                Relationships: []
             }
             invoice_items: {
                 Row: {
@@ -108,7 +110,20 @@ export interface Database {
                     price?: number
                     total?: number
                 }
+                Relationships: []
             }
+        }
+        Views: {
+            [_ in never]: never
+        }
+        Functions: {
+            [_ in never]: never
+        }
+        Enums: {
+            [_ in never]: never
+        }
+        CompositeTypes: {
+            [_ in never]: never
         }
     }
     pos: {
@@ -153,6 +168,7 @@ export interface Database {
                     is_featured?: boolean
                     created_at?: string
                 }
+                Relationships: []
             }
             invoices: {
                 Row: {
@@ -163,6 +179,8 @@ export interface Database {
                     discount_amount: number
                     discount_type: 'fixed' | 'percent' | null
                     created_at: string
+                    total_gifts_value?: number
+                    total_discounts_value?: number
                 }
                 Insert: {
                     id?: string
@@ -172,6 +190,8 @@ export interface Database {
                     discount_amount?: number
                     discount_type?: 'fixed' | 'percent' | null
                     created_at?: string
+                    total_gifts_value?: number
+                    total_discounts_value?: number
                 }
                 Update: {
                     id?: string
@@ -181,7 +201,10 @@ export interface Database {
                     discount_amount?: number
                     discount_type?: 'fixed' | 'percent' | null
                     created_at?: string
+                    total_gifts_value?: number
+                    total_discounts_value?: number
                 }
+                Relationships: []
             }
             invoice_items: {
                 Row: {
@@ -192,6 +215,8 @@ export interface Database {
                     quantity: number
                     price: number
                     total: number
+                    is_gift: boolean
+                    gift_reason: string | null
                 }
                 Insert: {
                     id?: string
@@ -201,6 +226,8 @@ export interface Database {
                     quantity: number
                     price: number
                     total: number
+                    is_gift?: boolean
+                    gift_reason?: string | null
                 }
                 Update: {
                     id?: string
@@ -210,8 +237,23 @@ export interface Database {
                     quantity?: number
                     price?: number
                     total?: number
+                    is_gift?: boolean
+                    gift_reason?: string | null
                 }
+                Relationships: []
             }
+        }
+        Views: {
+            [_ in never]: never
+        }
+        Functions: {
+            [_ in never]: never
+        }
+        Enums: {
+            [_ in never]: never
+        }
+        CompositeTypes: {
+            [_ in never]: never
         }
     }
 }

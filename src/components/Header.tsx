@@ -1,13 +1,14 @@
 
 import React from 'react';
-import { Upload, BarChart3 } from 'lucide-react';
+import { Upload, BarChart3, PieChart } from 'lucide-react';
 
 interface HeaderProps {
     onOpenSales: () => void;
     onOpenManagement: () => void;
+    onOpenReports: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onOpenSales, onOpenManagement }) => {
+export const Header: React.FC<HeaderProps> = ({ onOpenSales, onOpenManagement, onOpenReports }) => {
     return (
         <header className="app-header">
             <div className="brand">
@@ -19,6 +20,11 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSales, onOpenManagement })
                 <button className="btn btn-secondary" onClick={onOpenSales} style={{ height: '40px', padding: '0 16px', fontSize: '0.9rem' }}>
                     <BarChart3 size={18} />
                     <span className="mobile-hide">المبيعات</span>
+                </button>
+
+                <button className="btn btn-secondary" onClick={onOpenReports} style={{ height: '40px', padding: '0 16px', fontSize: '0.9rem' }}>
+                    <PieChart size={18} />
+                    <span className="mobile-hide">التقارير</span>
                 </button>
 
                 <button className="btn btn-primary" onClick={onOpenManagement} style={{ height: '40px', padding: '0 16px', fontSize: '0.9rem' }}>

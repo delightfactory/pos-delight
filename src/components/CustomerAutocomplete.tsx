@@ -32,7 +32,7 @@ export const CustomerAutocomplete: React.FC<CustomerAutocompleteProps> = ({
     const [activeIndex, setActiveIndex] = useState(-1);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
-    // البحث عن العملاء
+    // البحث عن العملاء من خلال الفواتير السابقة
     useEffect(() => {
         const searchCustomers = async () => {
             const query = value || phoneValue;
@@ -43,16 +43,50 @@ export const CustomerAutocomplete: React.FC<CustomerAutocompleteProps> = ({
                 return;
             }
 
+            // البحث في جدول الفواتير للحصول على بيانات العملاء الفريدة
             const { data, error } = await supabase
-                .from('customers')
-                .select('*')
-                .or(`name.ilike.%${query}%,phone.ilike.%${query}%`)
-                .order('last_purchase_date', { ascending: false })
-                .limit(5);
+                .from('invoices')
+                .select('customer_name, customer_phone, total_amount, created_at')
+                .or(`customer_name.ilike.%${query}%,customer_phone.ilike.%${query}%`)
+                .not('customer_name', 'is', null)
+                .order('created_at', { ascending: false })
+                .limit(100); // نجلب أكثر لتجميع البيانات
 
             if (!error && data) {
-                setSuggestions(data);
-                setIsOpen(data.length > 0);
+                // تجميع بيانات العملاء الفريدة
+                const customersMap = new Map<string, Customer>();
+
+                data.forEach((invoice) => {
+                    const key = `${invoice.customer_name || ''}_${invoice.customer_phone || ''}`;
+                    if (!invoice.customer_name) return;
+
+                    if (customersMap.has(key)) {
+                        const existing = customersMap.get(key)!;
+                        existing.total_purchases += invoice.total_amount || 0;
+                        existing.invoice_count += 1;
+                        // تحديث تاريخ آخر شراء إذا كان أحدث
+                        if (invoice.created_at > existing.last_purchase_date) {
+                            existing.last_purchase_date = invoice.created_at;
+                        }
+                    } else {
+                        customersMap.set(key, {
+                            id: key,
+                            name: invoice.customer_name,
+                            phone: invoice.customer_phone || '',
+                            total_purchases: invoice.total_amount || 0,
+                            invoice_count: 1,
+                            last_purchase_date: invoice.created_at
+                        });
+                    }
+                });
+
+                // تحويل إلى مصفوفة وترتيب حسب تاريخ آخر شراء
+                const customers = Array.from(customersMap.values())
+                    .sort((a, b) => new Date(b.last_purchase_date).getTime() - new Date(a.last_purchase_date).getTime())
+                    .slice(0, 5);
+
+                setSuggestions(customers);
+                setIsOpen(customers.length > 0);
             }
         };
 

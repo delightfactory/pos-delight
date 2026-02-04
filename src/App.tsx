@@ -7,6 +7,7 @@ import { CartPanel } from './components/CartPanel';
 import { QuickAddModal } from './components/QuickAddModal';
 import { ManagementModal } from './components/ManagementModal';
 import { SalesModal } from './components/SalesModal';
+import { ReportsBoard } from './components/ReportsBoard';
 import { Toast } from './components/ui/Toast';
 import { useProducts } from './hooks/useProducts';
 import { useCart } from './hooks/useCart';
@@ -25,6 +26,7 @@ function App() {
   // Modals
   const [isManagementOpen, setIsManagementOpen] = useState(false);
   const [isSalesOpen, setIsSalesOpen] = useState(false);
+  const [isReportsOpen, setIsReportsOpen] = useState(false);
 
   // Toast
   const [toastMsg, setToastMsg] = useState('');
@@ -184,6 +186,7 @@ function App() {
     <div className="app-container">
       <Header
         onOpenSales={() => setIsSalesOpen(true)}
+        onOpenReports={() => setIsReportsOpen(true)}
         onOpenManagement={() => setIsManagementOpen(true)}
       />
 
@@ -226,6 +229,11 @@ function App() {
       <SalesModal
         isOpen={isSalesOpen}
         onClose={() => setIsSalesOpen(false)}
+      />
+
+      <ReportsBoard
+        isOpen={isReportsOpen}
+        onClose={() => setIsReportsOpen(false)}
       />
 
       <Toast
